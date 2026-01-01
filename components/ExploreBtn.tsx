@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import posthog from "posthog-js";
 
 export default function ExploreBtn() {
   return (
