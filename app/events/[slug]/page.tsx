@@ -54,6 +54,7 @@ export default async function Page({
   const request = await fetch(`${BASE_URL}/api/events/${slug}`);
   const {
     event: {
+      _id,
       description,
       image,
       overview,
@@ -129,7 +130,7 @@ export default async function Page({
             ) : (
               <p className="text-sm">Be the first to book your spot</p>
             )}
-            <BookEvent />
+            <BookEvent eventId={_id} slug={slug} />
           </div>
         </aside>
       </div>
