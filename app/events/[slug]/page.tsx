@@ -2,9 +2,9 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import BookEvent from "@/components/BookEvent";
 import { IEvent } from "@/database";
-import { getSimilarEventsBySlug } from "@/lib/actions/event.actions";
+import { getEventBySlug, getSimilarEventsBySlug } from "@/lib/actions/event.actions";
 import EventCard from "@/components/EventCard";
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
 const EventDetailItem = ({
   icon,
   alt,
@@ -14,71 +14,76 @@ const EventDetailItem = ({
   alt: string;
   label: string;
 }) => (
-  <div className="flex-row-gap-2 items-center">
-    <Image src={icon} alt={alt} width={17} height={17} />
+  <div className="flex flex-row gap-2 items-center">
+    <Image src={icon} alt={alt} width={17} height={17} className="invert brightness-200" />
     <p>{label}</p>
   </div>
 );
+
 const booking = 0;
+
 const EventAgenda = ({ agendaItems }: { agendaItems: string[] }) => {
   if (!agendaItems || agendaItems.length === 0) return null;
 
   return (
     <div className="agenda">
-      <h2>Agenda</h2>
-      <ul>
+      <h2 className="text-xl font-bold uppercase tracking-widest text-primary/60 mb-4">Agenda</h2>
+      <ul className="space-y-2">
         {agendaItems.map((item) => (
-          <li key={item}>{item}</li>
+          <li key={item} className="text-light-100">{item}</li>
         ))}
       </ul>
     </div>
   );
 };
+
 const EventTag = ({ tags }: { tags: string[] }) => {
   return (
     <div className="flex flex-row gap-1.5 flex-wrap">
       {tags.map((tag) => (
-        <div className="pill" key={tag}>
+        <div className="pill bg-charcoal-blue-100 text-ash-grey-400 border border-white/5" key={tag}>
           {tag}
         </div>
       ))}
     </div>
   );
 };
+
 export default async function Page({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const request = await fetch(`${BASE_URL}/api/events/${slug}`);
-  const {
-    event: {
-      _id,
-      title,
-      description,
-      image,
-      overview,
-      date,
-      time,
-      location,
-      mode,
-      agenda,
-      audience,
-      organizer,
-      tags,
-    },
-  } = await request.json();
-  if (!title) return notFound();
+  const event = await getEventBySlug(slug) as IEvent | null;
 
-  const similarEvents: IEvent[] = await getSimilarEventsBySlug(slug);
+  if (!event || !event.description) return notFound();
+
+  const {
+    _id,
+    title,
+    description,
+    image,
+    overview,
+    date,
+    time,
+    location,
+    mode,
+    agenda,
+    audience,
+    organizer,
+    tags,
+  } = event;
+
+  const similarEvents = await getSimilarEventsBySlug(slug) as IEvent[];
+
   return (
     <section id="event" className="max-w-6xl mx-auto px-4 py-12 space-y-12 animate-in fade-in duration-700">
       <div className="header space-y-6">
         <h1 className="text-4xl md:text-5xl font-bold text-gradient tracking-tight leading-tight">
           {title}
         </h1>
-        <p className="text-xl text-light-200 max-w-4xl leading-relaxed">
+        <p className="text-xl text-muted-foreground max-w-4xl leading-relaxed">
           {description}
         </p>
       </div>
@@ -93,13 +98,13 @@ export default async function Page({
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-charcoal-blue-100/40 to-transparent" />
           </div>
 
           <div className="space-y-8">
             <section className="bg-card p-6 rounded-xl border border-border">
               <h2 className="text-2xl font-bold text-primary uppercase tracking-wider mb-6">Overview</h2>
-              <p className="text-lg leading-relaxed italic">{overview}</p>
+              <p className="text-lg leading-relaxed italic text-muted-foreground">{overview}</p>
             </section>
 
             <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -146,7 +151,7 @@ export default async function Page({
             ) : (
               <p className="text-sm text-muted-foreground mb-8 italic">Be the first to join the revolution.</p>
             )}
-            <BookEvent eventId={_id} slug={slug} />
+            <BookEvent eventId={_id.toString()} slug={slug} />
           </div>
         </aside>
       </div>
@@ -169,4 +174,3 @@ export default async function Page({
     </section>
   );
 }
-

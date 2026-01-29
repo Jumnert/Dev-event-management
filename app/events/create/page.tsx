@@ -78,7 +78,9 @@ export default function CreateEventPage() {
                 throw new Error(result.message || result.error || "Failed to create event");
             }
 
+            // Push to home and refresh to show new data
             router.push("/");
+            router.refresh();
         } catch (err: any) {
             setError(err.message || "An unexpected error occurred");
         } finally {
@@ -128,12 +130,12 @@ export default function CreateEventPage() {
                                 value={formData.organizer}
                                 onChange={handleChange}
                                 placeholder="Name or Organization"
-                                className="bg-black/50 border-white/10 text-white placeholder:text-white/20"
+                                className="bg-background/50 border-border/50 text-foreground placeholder:text-muted-foreground/50"
                             />
                         </div>
 
                         <div className="md:col-span-2 space-y-2">
-                            <Label htmlFor="overview" className="text-light-100 font-semibold">Short Overview</Label>
+                            <Label htmlFor="overview" className="text-foreground/90 font-semibold">Short Overview</Label>
                             <Input
                                 id="overview"
                                 name="overview"
@@ -141,12 +143,12 @@ export default function CreateEventPage() {
                                 value={formData.overview}
                                 onChange={handleChange}
                                 placeholder="A catchy one-liner about your event"
-                                className="bg-black/50 border-white/10 text-white placeholder:text-white/20"
+                                className="bg-background/50 border-border/50 text-foreground placeholder:text-muted-foreground/50"
                             />
                         </div>
 
                         <div className="md:col-span-2 space-y-2">
-                            <Label htmlFor="description" className="text-light-100 font-semibold">Full Description</Label>
+                            <Label htmlFor="description" className="text-foreground/90 font-semibold">Full Description</Label>
                             <Textarea
                                 id="description"
                                 name="description"
@@ -155,12 +157,12 @@ export default function CreateEventPage() {
                                 value={formData.description}
                                 onChange={handleChange}
                                 placeholder="Tell us more about what makes this event special..."
-                                className="bg-black/50 border-white/10 text-white placeholder:text-white/20"
+                                className="bg-background/50 border-border/50 text-foreground placeholder:text-muted-foreground/50"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="date" className="text-light-100 font-semibold">Date</Label>
+                            <Label htmlFor="date" className="text-foreground/90 font-semibold">Date</Label>
                             <Input
                                 id="date"
                                 type="date"
@@ -168,12 +170,12 @@ export default function CreateEventPage() {
                                 required
                                 value={formData.date}
                                 onChange={handleChange}
-                                className="bg-black/50 border-white/10 text-white [color-scheme:dark]"
+                                className="bg-background/50 border-border/50 text-foreground [color-scheme:dark]"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="time" className="text-light-100 font-semibold">Time</Label>
+                            <Label htmlFor="time" className="text-foreground/90 font-semibold">Time</Label>
                             <Input
                                 id="time"
                                 type="time"
@@ -181,12 +183,12 @@ export default function CreateEventPage() {
                                 required
                                 value={formData.time}
                                 onChange={handleChange}
-                                className="bg-black/50 border-white/10 text-white [color-scheme:dark]"
+                                className="bg-background/50 border-border/50 text-foreground [color-scheme:dark]"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="venue" className="text-light-100 font-semibold">Venue</Label>
+                            <Label htmlFor="venue" className="text-foreground/90 font-semibold">Venue</Label>
                             <Input
                                 id="venue"
                                 name="venue"
@@ -194,12 +196,12 @@ export default function CreateEventPage() {
                                 value={formData.venue}
                                 onChange={handleChange}
                                 placeholder="e.g. Grand Hall or Zoom Link"
-                                className="bg-black/50 border-white/10 text-white placeholder:text-white/20"
+                                className="bg-background/50 border-border/50 text-foreground placeholder:text-muted-foreground/50"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="location" className="text-light-100 font-semibold">Location</Label>
+                            <Label htmlFor="location" className="text-foreground/90 font-semibold">Location</Label>
                             <Input
                                 id="location"
                                 name="location"
@@ -207,18 +209,18 @@ export default function CreateEventPage() {
                                 value={formData.location}
                                 onChange={handleChange}
                                 placeholder="e.g. Bangkok, Thailand"
-                                className="bg-black/50 border-white/10 text-white placeholder:text-white/20"
+                                className="bg-background/50 border-border/50 text-foreground placeholder:text-muted-foreground/50"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="mode" className="text-light-100 font-semibold">Mode</Label>
+                            <Label htmlFor="mode" className="text-foreground/90 font-semibold">Mode</Label>
                             <select
                                 id="mode"
                                 name="mode"
                                 value={formData.mode}
                                 onChange={handleChange}
-                                className="flex h-9 w-full rounded-md border border-white/10 bg-black/50 px-3 py-1 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary"
+                                className="flex h-9 w-full rounded-md border border-border/50 bg-background/50 px-3 py-1 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                             >
                                 <option value="offline">Offline</option>
                                 <option value="online">Online</option>
@@ -227,7 +229,7 @@ export default function CreateEventPage() {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="audience" className="text-light-100 font-semibold">Audience</Label>
+                            <Label htmlFor="audience" className="text-foreground/90 font-semibold">Audience</Label>
                             <Input
                                 id="audience"
                                 name="audience"
@@ -235,12 +237,12 @@ export default function CreateEventPage() {
                                 value={formData.audience}
                                 onChange={handleChange}
                                 placeholder="e.g. Developers, Students"
-                                className="bg-black/50 border-white/10 text-white placeholder:text-white/20"
+                                className="bg-background/50 border-border/50 text-foreground placeholder:text-muted-foreground/50"
                             />
                         </div>
 
                         <div className="md:col-span-2 space-y-2">
-                            <Label htmlFor="tags" className="text-light-100 font-semibold">Tags (comma separated)</Label>
+                            <Label htmlFor="tags" className="text-foreground/90 font-semibold">Tags (comma separated)</Label>
                             <Input
                                 id="tags"
                                 name="tags"
@@ -248,12 +250,12 @@ export default function CreateEventPage() {
                                 value={formData.tags}
                                 onChange={handleChange}
                                 placeholder="e.g. React, Next.js, AI"
-                                className="bg-black/50 border-white/10 text-white placeholder:text-white/20"
+                                className="bg-background/50 border-border/50 text-foreground placeholder:text-muted-foreground/50"
                             />
                         </div>
 
                         <div className="md:col-span-2 space-y-2">
-                            <Label htmlFor="agenda" className="text-light-100 font-semibold">Agenda (One per line)</Label>
+                            <Label htmlFor="agenda" className="text-foreground/90 font-semibold">Agenda (One per line)</Label>
                             <Textarea
                                 id="agenda"
                                 name="agenda"
@@ -262,19 +264,19 @@ export default function CreateEventPage() {
                                 value={formData.agenda}
                                 onChange={handleChange}
                                 placeholder="09:00 - Introduction&#10;10:00 - Keynote Session"
-                                className="bg-black/50 border-white/10 text-white placeholder:text-white/20"
+                                className="bg-background/50 border-border/50 text-foreground placeholder:text-muted-foreground/50"
                             />
                         </div>
 
                         <div className="md:col-span-2 space-y-2">
-                            <Label htmlFor="image" className="text-light-100 font-semibold">Event Image</Label>
+                            <Label htmlFor="image" className="text-foreground/90 font-semibold">Event Image</Label>
                             <Input
                                 id="image"
                                 type="file"
                                 accept="image/*"
                                 required
                                 onChange={handleImageChange}
-                                className="bg-black/50 border-white/10 text-white file:text-white file:bg-white/10 file:border-0 file:px-3 file:py-1 file:rounded-md hover:file:bg-white/20 cursor-pointer"
+                                className="bg-background/50 border-border/50 text-foreground file:text-foreground file:bg-foreground/10 file:border-0 file:px-3 file:py-1 file:rounded-md hover:file:bg-foreground/20 cursor-pointer"
                             />
                         </div>
                     </div>

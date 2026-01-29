@@ -4,6 +4,8 @@ import { v2 as cloudinary } from "cloudinary";
 import connectDB, { connectToDatabase } from "@/lib/mongodb";
 import Event from "@/database/event.model";
 
+import { revalidateEvents, getAllEvents } from "@/lib/actions/event.actions";
+
 export async function POST(req: NextRequest) {
   try {
     await connectToDatabase();
@@ -56,6 +58,13 @@ export async function POST(req: NextRequest) {
       agenda: agenda,
     });
 
+    // REVALIDATE: Clear the events cache
+    try {
+      await revalidateEvents();
+    } catch (revalidateError) {
+      console.error("Revalidation failed, but event was created:", revalidateError);
+    }
+
     return NextResponse.json(
       { message: "Event created successfully", event: createdEvent },
       { status: 201 }
@@ -74,9 +83,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   try {
-    await connectDB();
-
-    const events = await Event.find().sort({ createdAt: -1 });
+    const events = await getAllEvents();
 
     return NextResponse.json(
       { message: "Events fetched successfully", events },
@@ -89,3 +96,4 @@ export async function GET() {
     );
   }
 }
+
